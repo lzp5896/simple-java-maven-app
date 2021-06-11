@@ -52,13 +52,7 @@ pipeline {
         }
       }
       steps {
-        kubernetesDeploy(
-          kubeconfigId: '16710f45-5f4c-4ddb-8bfc-c41e810be1cc',               // REQUIRED
-          configs: 'myapp.yml', // REQUIRED
-          enableConfigSubstitution: true,
-          secretName: 'harbor-auth', 
-          dockerCredentials: [[credentialsId: 'harbor', url: 'http://192.168.122.100:80']]
-        )
+        sh 'kubectl apply -f myapp.yml'
       }
     }
   }
