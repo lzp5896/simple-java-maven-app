@@ -12,6 +12,7 @@ pipeline {
       // 此阶段的代理: docker 容器
       agent {
         docker {
+        label "master"
         image 'maven:3-alpine'
         args '-v $HOME/.m2:/root/.m2'
         // 自定义的工作空间
