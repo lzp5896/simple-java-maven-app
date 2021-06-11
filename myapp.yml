@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: 192.168.122.100:80/app-java/myapp:v6.9
+      imagePullSecrets:
+        - name: harbor-auth  // 用于harbor 仓库的认证密钥
