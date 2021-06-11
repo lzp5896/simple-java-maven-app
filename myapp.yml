@@ -16,4 +16,4 @@ spec:
         - name: myapp
           image: 192.168.122.100:80/app-java/myapp:v6.9
       imagePullSecrets:
-        - name: harbor-auth  // 用于harbor 仓库的认证密钥
+        - name: harbor-auth
