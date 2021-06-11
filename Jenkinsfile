@@ -11,15 +11,12 @@ pipeline {
     stage('pull code and build') {
       // 此阶段的代理: docker 容器
       agent {
-                  docker {
-                      label 'master'
+        docker {
         image 'maven:3-alpine'
         args '-v $HOME/.m2:/root/.m2'
         // 自定义的工作空间
         customWorkspace "/opt/"
         }
-     
-
       }
       steps {
         // 拉取代码
@@ -43,6 +40,24 @@ pipeline {
             docker.build('app-java/myapp').push('v6.9')
           }
         }
+      }
+    }
+    stage("deploy app"){
+      agent {
+        node {
+          label 'master'
+          customWorkspace "/opt/"
+
+        }
+      }
+      steps {
+        kubernetesDeploy(
+          kubeconfigId: '16710f45-5f4c-4ddb-8bfc-c41e810be1cc',               // REQUIRED
+          configs: 'myapp.yml', // REQUIRED
+          enableConfigSubstitution: true,
+          secretName: 'harbor-auth', 
+          dockerCredentials: [[credentialsId: 'harbor', url: 'http://192.168.122.100:80']]
+        )
       }
     }
   }
